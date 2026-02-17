@@ -1,39 +1,30 @@
-import type { Metadata } from 'next'
-import { createClient } from '@/lib/supabase-server'
-import { redirect } from 'next/navigation'
-import { SignInButton } from '@/components/SignInButton'
+import type { Metadata } from "next";
+import { createClient } from "@/lib/supabase-server";
+import { redirect } from "next/navigation";
+import { HeroSection } from "@/components/landing/HeroSection";
+import { FeaturesGrid } from "@/components/landing/FeaturesGrid";
+import { GitHubCTA } from "@/components/landing/GitHubCTA";
 
 export const metadata: Metadata = {
-  title: 'Sign in — SmartBookmark',
-  description: 'Sign in with Google to access your bookmarks.',
-}
+  title: "Sign in — SmartBookmark",
+  description: "Sign in with Google to access your bookmarks.",
+};
 
 export default async function SignInPage() {
-  const supabase = await createClient()
+  const supabase = await createClient();
   const {
     data: { user },
-  } = await supabase.auth.getUser()
+  } = await supabase.auth.getUser();
 
-  if (user) redirect('/dashboard')
+  if (user) redirect("/dashboard");
 
   return (
-    <div className="mx-auto flex min-h-[calc(100dvh-64px)] max-w-6xl items-center px-4 py-16 sm:px-6">
-      <div className="w-full rounded-2xl border border-border bg-card p-8 shadow-sm md:p-10">
-        <h1 className="text-3xl font-bold tracking-tight sm:text-4xl">
-          Sign in to SmartBookmark
-        </h1>
-        <p className="mt-3 max-w-xl text-sm text-muted-foreground">
-          Google OAuth only. No passwords. Your bookmarks are protected by Row Level Security.
-        </p>
-
-        <div className="mt-8">
-          <SignInButton />
-        </div>
-
-        <p className="mt-6 text-xs text-muted-foreground">
-          By continuing you agree to our Terms and Privacy Policy (placeholders).
-        </p>
-      </div>
+    <div className="flex min-h-screen flex-col bg-background selection:bg-primary/10 selection:text-primary">
+      <main className="flex-1">
+        <HeroSection />
+        <FeaturesGrid />
+        <GitHubCTA />
+      </main>
     </div>
-  )
+  );
 }
